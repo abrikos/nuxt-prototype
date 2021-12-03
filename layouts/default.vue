@@ -1,7 +1,9 @@
 <template>
   <div>
     <TopMenu/>
+    <SideBar content="NuxtLogo"/>
     <b-container class="page-content">
+      <b-button v-b-toggle.global-sidebar>Toggle Sidebar</b-button>
       <nuxt/>
     </b-container>
 
@@ -9,7 +11,6 @@
 </template>
 
 <script>
-
 import userRoutes from '~/routes/user.routes';
 
 export default {
