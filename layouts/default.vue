@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SideBar content="NuxtLogo"/>
+    <SideBar />
     <b-container class="page-content">
       <b-button v-b-toggle.global-sidebar @click="showSideBar('login')">Show login</b-button>
       <b-button v-b-toggle.global-sidebar @click="showSideBar('filter')">Filter</b-button>

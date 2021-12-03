@@ -1,9 +1,10 @@
 <template>
   <div>
-    <b-sidebar id="global-sidebar" :title="$store.state.sidebar.name" right shadow="lg" backdrop>
+    <b-sidebar id="global-sidebar" :title="$store.state.sidebar.name" :width="widthCalc" right shadow="lg" backdrop>
       <div class="px-3 py-2">
         <Filters v-if="$store.state.sidebar.name==='filter'"/>
         <LoginForm v-if="$store.state.sidebar.name==='login'"/>
+        {{className}}
       </div>
     </b-sidebar>
   </div>
@@ -15,6 +16,14 @@ import LoginForm from '@/components/LoginForm';
 export default {
   name: "SideBar",
   components: {LoginForm, Filters},
+  computed:{
+    widthCalc(){
+      switch (this.$store.state.sidebar.name){
+        case 'login': return '40%'
+        default: return '80%'
+      }
+    }
+  }
 }
 </script>
 
@@ -22,7 +31,6 @@ export default {
 #global-sidebar
   background-color: red
   margin: 50px 0 50px
-  width: 80%
   height: 90%
   border-radius: 30px 0% 0% 30px
   button.close
