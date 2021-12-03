@@ -2,6 +2,7 @@
   <div>
     <SideBar />
     <b-container class="page-content">
+      <b-spinner type="grow"></b-spinner>
       <b-button v-b-toggle.global-sidebar @click="showSideBar('login')">Show login</b-button>
       <b-button v-b-toggle.global-sidebar @click="showSideBar('filter')">Filter</b-button>
       <nuxt/>
@@ -31,7 +32,9 @@ export default {
 <style lang="sass">
   body
     background-color: #47494E
+    padding: 20px
     .page-content
+      border-radius: 10px
       background-color: aliceblue
       min-height: 100vh
     h1

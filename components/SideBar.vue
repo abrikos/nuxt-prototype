@@ -1,6 +1,13 @@
 <template>
   <div>
-    <b-sidebar id="global-sidebar" :title="$store.state.sidebar.name" :width="widthCalc" right shadow="lg" backdrop>
+    <b-sidebar
+      id="global-sidebar"
+      :title="$store.state.sidebar.name"
+      :width="widthCalc"
+      right
+      shadow="lg"
+      backdrop
+    >
       <div class="px-3 py-2">
         <Filters v-if="$store.state.sidebar.name==='filter'"/>
         <LoginForm v-if="$store.state.sidebar.name==='login'"/>
