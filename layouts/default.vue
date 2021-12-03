@@ -32,7 +32,6 @@ export default {
 <style lang="sass">
   body
     background-color: #47494E
-    padding: 20px
     .page-content
       border-radius: 10px
       background-color: aliceblue

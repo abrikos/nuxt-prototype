@@ -37,8 +37,6 @@ export default {
 <style lang="sass">
 #global-sidebar
   background-color: red
-  margin: 50px 0 50px
-  height: 90%
   border-radius: 30px 0% 0% 30px
   button.close
     position: relative
