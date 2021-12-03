@@ -1,17 +1,20 @@
 <template>
   <div>
-    <b-sidebar id="global-sidebar" title="Sidebar" right shadow="lg" backdrop>
+    <b-sidebar id="global-sidebar" :title="$store.state.sidebar.name" right shadow="lg" backdrop>
       <div class="px-3 py-2">
-        {{content}}
+        <Filters v-if="$store.state.sidebar.name==='filter'"/>
+        <LoginForm v-if="$store.state.sidebar.name==='login'"/>
       </div>
     </b-sidebar>
   </div>
 </template>
 
 <script>
+import Filters from '@/components/Filters';
+import LoginForm from '@/components/LoginForm';
 export default {
   name: "SideBar",
-  props: ['content']
+  components: {LoginForm, Filters},
 }
 </script>
 
@@ -22,7 +25,7 @@ export default {
   width: 80%
   height: 90%
   border-radius: 30px 0% 0% 30px
-  button
+  button.close
     position: relative
     left: -100px
     top: 50px

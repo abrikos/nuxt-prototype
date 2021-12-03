@@ -1,9 +1,9 @@
 <template>
   <div>
-    <TopMenu/>
     <SideBar content="NuxtLogo"/>
     <b-container class="page-content">
-      <b-button v-b-toggle.global-sidebar>Toggle Sidebar</b-button>
+      <b-button v-b-toggle.global-sidebar @click="showSideBar('login')">Show login</b-button>
+      <b-button v-b-toggle.global-sidebar @click="showSideBar('filter')">Filter</b-button>
       <nuxt/>
     </b-container>
 
@@ -19,6 +19,11 @@ export default {
     .then(user=>{
       this.$store.commit('auth', {user})
     })
+  },
+  methods:{
+    showSideBar(type){
+      this.$store.commit('sidebar/set', type)
+    }
   }
 }
 </script>

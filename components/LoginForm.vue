@@ -1,5 +1,6 @@
 <template>
   <div>
+    zzzzzz
     <GoogleLogin :params="params" :onSuccess="onSuccess" :onFailure="onFailure">Login</GoogleLogin>
   </div>
 </template>
@@ -7,7 +8,7 @@
 <script>
 import GoogleLogin from 'vue-google-login';
 export default {
-  name: "login",
+  name: "LoginForm",
   data() {
     return {
       // client_id is the only required property but you can add several more params, full list down bellow on the Auth api section
@@ -26,11 +27,11 @@ export default {
     console.log(process.env)
   },
   methods:{
-    onSuccess(){
-
+    onSuccess(data){
+      console.log(data)
     },
-    onFailure(){
-
+    onFailure(data){
+      console.error(data)
     }
   },
   components: {
