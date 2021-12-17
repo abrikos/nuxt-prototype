@@ -22,7 +22,7 @@ app.use(session({
   secret: 'fdsdfs&%dfsd',
   name: 'secretname',
   cookie: {
-    maxAge: 600000 // Time is in miliseconds
+    maxAge: 360000000 // Time is in miliseconds
   },
   saveUninitialized: true,
   store: new MongoStore({mongoUrl: process.env.MONGODB_URI}),

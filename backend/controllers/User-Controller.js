@@ -10,28 +10,36 @@ export default function UserController(app) {
   }
 
   app.get('/api/auth', async (req, res) => {
-    if (!req.session.uid) return res.status(401).send({message: 'Not logged. No passport'})
-    if (!req.session.uid.user) return res.status(401).send({message: 'Not logged. No user'})
+    console.log(req.session)
+    if (!req.session.uid) return res.status(401).send({message: 'Not logged. No user'})
     Mongoose.user.findById(req.session.uid)
       .then(user => {
         if (!user) return res.status(401).send({message: 'Wrong authenticated user '})
-        res.send(user.publicData())
+        console.log(user.public.name)
+        res.send(user.public)
       })
       .catch(error => res.send({error: 500, message: error.message}))
   });
 
-  app.post('/api/login/google', (req, res) => {
+  app.post('/api/login/google', async (req, res) => {
     const {yu} = req.body;
-    console.log(yu)
     if(!yu && yu.DW) return res.sendStatus(401)
-    //TODO create user from yu
-    Mongoose.user.findById(req.session.uid)
-      .then(user => {
-        res.send(user.publicData());
-      })
-      .catch(error => {
-        res.status(500).send({message: error.message})
-      })
+    try {
+      let user = await Mongoose.user.findOne({username: yu.DW})
+      if (!user) {
+        user = new Mongoose.user({
+          username: yu.DW,
+          email: yu.nv,
+          avatar: yu.nN,
+          name: yu.nf
+        })
+        await user.save();
+      }
+      req.session.uid = user.id;
+      res.send(user.public);
+    }catch(e){
+      res.status(500).send({message: e.message})
+    }
   });
 
   app.get('/api/logout', isLogged, (req, res) => {

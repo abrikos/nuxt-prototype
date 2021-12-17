@@ -13,6 +13,7 @@ export default {
   components: {TopMenu},
   mounted() {
     this.$axios.$get('auth')
+      .then(res => this.$store.commit('setUser', res))
     .catch(console.warn)
   },
   methods:{

@@ -1,19 +1,12 @@
-export const state = () => ({
+export const state = {
   user: null,
-  sideBar: null,
-})
+}
 
-export const mutations = () => ({
-  setSidebarContent(state, name){
-    state.sideBar = name;
-  },
-  auth(state, {user}){
-    state.user = user;
+export const mutations = {
+  setUser(state, payload){
+    state.user = payload;
   },
   logout(state){
     state.user = null;
-  },
-  increment (state) {
-    state.counter++
   }
-})
+}

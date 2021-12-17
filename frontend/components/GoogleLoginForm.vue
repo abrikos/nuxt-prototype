@@ -1,6 +1,7 @@
 <template>
   <div>
     <GoogleLogin :params="params" :onSuccess="onSuccess" :onFailure="onFailure">Login</GoogleLogin>
+    <button @click="test">Test</button>
   </div>
 </template>
 
@@ -26,9 +27,12 @@ export default {
     console.log(process.env);
   },
   methods:{
+    test(){
+      this.$axios.$get('auth')
+    },
     onSuccess(data){
       console.log(data)
-      this.$axios.$post('/login/google', data)
+      this.$axios.$post('login/google', data)
     },
     onFailure(data){
       console.error(data)
