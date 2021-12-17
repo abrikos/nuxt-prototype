@@ -1,6 +1,5 @@
 <template>
   <div>
-    zzzzzz
     <GoogleLogin :params="params" :onSuccess="onSuccess" :onFailure="onFailure">Login</GoogleLogin>
   </div>
 </template>
@@ -24,11 +23,12 @@ export default {
     }
   },
   mounted() {
-    console.log(process.env)
+    console.log(process.env);
   },
   methods:{
     onSuccess(data){
       console.log(data)
+      this.$axios.$post('/login/google', data)
     },
     onFailure(data){
       console.error(data)

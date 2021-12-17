@@ -1,25 +1,19 @@
 <template>
   <div>
-    <SideBar />
+    <TopMenu/>
     <b-container class="page-content">
-      <b-spinner type="grow"></b-spinner>
-      <b-button v-b-toggle.global-sidebar @click="showSideBar('login')">Show login</b-button>
-      <b-button v-b-toggle.global-sidebar @click="showSideBar('filter')">Filter</b-button>
       <nuxt/>
     </b-container>
-
   </div>
 </template>
 
 <script>
-import userRoutes from '~/routes/user.routes';
-
+import TopMenu from '@/components/TopMenu';
 export default {
+  components: {TopMenu},
   mounted() {
-    userRoutes.auth()
-    .then(user=>{
-      this.$store.commit('auth', {user})
-    })
+    this.$axios.$get('auth')
+    .catch(console.warn)
   },
   methods:{
     showSideBar(type){

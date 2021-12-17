@@ -1,3 +1,4 @@
+require('dotenv').config();
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -22,6 +23,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/plugins/axios'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -29,6 +31,7 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+    '@nuxtjs/dotenv',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -44,7 +47,16 @@ export default {
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
-
+  privateRuntimeConfig: {
+    axios: {
+      baseURL: process.env.BASE_URL
+    }
+  },
+  publicRuntimeConfig: {
+    axios: {
+      browserBaseURL: process.env.BASE_URL
+    }
+  },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   }

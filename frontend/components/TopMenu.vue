@@ -15,7 +15,7 @@
       <b-navbar-nav class="ms-auto">
         <b-nav-item to="/profile" v-show="$store.state.user">{{ $store.state.user && $store.state.user.username }}
         </b-nav-item>
-        <b-nav-item to="/login" v-show="!$store.state.user">Вход</b-nav-item>
+        <b-nav-item to="/signin" v-show="!$store.state.user">Вход</b-nav-item>
         <b-nav-item to="/signup" v-show="!$store.state.user">Регистрация</b-nav-item>
         <b-nav-item to="/logout" v-show="$store.state.user">Выход</b-nav-item>
       </b-navbar-nav>
