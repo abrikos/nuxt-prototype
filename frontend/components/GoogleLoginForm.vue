@@ -32,7 +32,10 @@ export default {
     },
     onSuccess(data){
       this.$axios.$post('login/google', data)
-        .then(user => this.$store.commit('setUser', user));
+        .then(user => {
+          this.$store.commit('setUser', user);
+          this.$router.push('/cabinet')
+        });
     },
     onFailure(data){
       console.error(data)

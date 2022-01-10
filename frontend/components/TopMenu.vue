@@ -6,11 +6,7 @@
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav v-show="loggedUser">
-        <b-nav-item to="/post-list" :active='$route.name && !!$route.name.match(/^post/)'>Посты</b-nav-item>
-        <b-nav-item to="/type" :active='$route.name ==="type"'>Типы постов</b-nav-item>
-        <b-nav-item to="/word" :active='$route.name ==="word"'>Ключевые слова</b-nav-item>
-        <b-nav-item to="/tag">Тэги</b-nav-item>
-        <b-nav-item to="/file">Файлы</b-nav-item>
+        <b-nav-item to="/post-list" :active='$route.name && !!$route.name.match(/^cabinet/)'>Кабинет</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav class="ms-auto">
         <b-nav-item to="/profile" v-show="loggedUser">{{ loggedUser && loggedUser.name }}
