@@ -1,7 +1,7 @@
 <template>
   <div>
-    <GoogleLogin :params="params" :onSuccess="onSuccess" :onFailure="onFailure">Login</GoogleLogin>
-    <button @click="test">Test</button>
+    <GoogleLogin :params="params" :renderParams="renderParams" :onSuccess="onSuccess" :onFailure="onFailure" />
+    <button @click="test">Test Auth</button>
   </div>
 </template>
 
@@ -31,8 +31,8 @@ export default {
       this.$axios.$get('auth')
     },
     onSuccess(data){
-      console.log(data)
       this.$axios.$post('login/google', data)
+        .then(user => this.$store.commit('setUser', user));
     },
     onFailure(data){
       console.error(data)

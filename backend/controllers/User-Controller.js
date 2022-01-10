@@ -10,7 +10,6 @@ export default function UserController(app) {
   }
 
   app.get('/api/auth', async (req, res) => {
-    console.log(req.session)
     if (!req.session.uid) return res.status(401).send({message: 'Not logged. No user'})
     Mongoose.user.findById(req.session.uid)
       .then(user => {
@@ -43,7 +42,7 @@ export default function UserController(app) {
   });
 
   app.get('/api/logout', isLogged, (req, res) => {
-    req.session.uid = {};
+    delete req.session.uid;
     res.sendStatus(200);
   });
 

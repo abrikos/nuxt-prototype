@@ -1,6 +1,6 @@
 <template>
   <b-navbar toggleable="lg" type="dark" variant="dark" sticky>
-    <b-navbar-brand to="/">Softorium Admin</b-navbar-brand>
+    <b-navbar-brand to="/">Poker Abrikos</b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -17,7 +17,7 @@
         </b-nav-item>
         <b-nav-item to="/signin" v-show="!loggedUser">Вход</b-nav-item>
         <b-nav-item to="/signup" v-show="!loggedUser">Регистрация</b-nav-item>
-        <b-nav-item to="/logout" v-show="loggedUser">Выход</b-nav-item>
+        <b-nav-item @click="logout" v-show="loggedUser">Выход</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
@@ -30,6 +30,12 @@ export default {
   computed:{
     loggedUser(){
       return this.$store.state.user
+    }
+  },
+  methods: {
+    async logout(){
+      await this.$axios.$get('logout');
+      this.$store.commit('logout')
     }
   }
 }
