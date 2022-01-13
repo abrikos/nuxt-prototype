@@ -1,12 +1,14 @@
 <template>
   <div>
-    <GoogleLogin :params="params" :renderParams="renderParams" :onSuccess="onSuccess" :onFailure="onFailure" />
+    <GoogleLogin :params="params" :renderParams="renderParams" :onSuccess="onSuccess" :onFailure="onFailure"/>
     <button @click="test">Test Auth</button>
+    {{$auth.user}}
   </div>
 </template>
 
 <script>
 import GoogleLogin from 'vue-google-login';
+
 export default {
   name: "LoginForm",
   data() {
@@ -26,18 +28,18 @@ export default {
   mounted() {
     console.log(process.env);
   },
-  methods:{
-    test(){
+  methods: {
+    test() {
       this.$axios.$get('auth')
     },
-    onSuccess(data){
-      this.$axios.$post('login/google', data)
-        .then(user => {
-          this.$store.commit('setUser', user);
-          this.$router.push('/cabinet')
+    onSuccess(data) {
+      this.$auth.loginWith('local', {data: {strategy: 'google', data}})
+        .then(res => {
+          console.log(res);
+          this.$store.commit('setUser', res.data);
         });
     },
-    onFailure(data){
+    onFailure(data) {
       console.error(data)
     }
   },

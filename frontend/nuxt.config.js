@@ -40,7 +40,34 @@ export default {
     'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
   ],
+  auth: {
+    strategies: {
+      google: {
+        clientId: '215547990872-9ggmlbv72dpnhuho5uclpn4a2hhrs96j.apps.googleusercontent.com',
+        codeChallengeMethod: '',
+        responseType: 'code',
+      },
+      local: {
+        token: {
+          property: 'token',
+          global: true,
+          // required: true,
+          // type: 'Bearer'
+        },
+        user: {
+          property: 'user',
+          // autoFetch: true
+        },
+        endpoints: {
+          login: { url: '/login', method: 'post' },
+          logout: { url: '/api/auth/logout', method: 'post' },
+          user: { url: '/api/auth/user', method: 'get' }
+        }
+      }
+    }
+  },
   bootstrapVue: {
     // Install the `IconsPlugin` plugin (in addition to `BootstrapVue` plugin)
     icons: true,

@@ -20,24 +20,31 @@ export default function UserController(app) {
       .catch(error => res.send({error: 500, message: error.message}))
   });
 
-  app.post('/api/login/google', async (req, res) => {
-    const {yu} = req.body;
-    if(!yu && yu.DW) return res.sendStatus(401)
-    try {
-      let user = await Mongoose.user.findOne({username: yu.DW})
-      if (!user) {
-        user = new Mongoose.user({
-          username: yu.DW,
-          email: yu.nv,
-          avatar: yu.nN,
-          name: yu.nf
-        })
-        await user.save();
+  app.post('/api/login', async (req, res) => {
+    const {strategy, data} = req.body;
+    console.log('zzz', strategy);
+    if(strategy === 'google'){
+      const {yu} = data;
+      if(!yu && yu.DW) return res.sendStatus(401)
+      try {
+        let user = await Mongoose.user.findOne({username: yu.DW})
+        if (!user) {
+          user = new Mongoose.user({
+            username: yu.DW,
+            email: yu.nv,
+            avatar: yu.nN,
+            name: yu.nf
+          })
+          await user.save();
+        }
+        req.session.uid = user.id;
+        console.log(user.public);
+        res.send(user.public);
+      }catch(e){
+        res.status(500).send({message: e.message})
       }
-      req.session.uid = user.id;
-      res.send(user.public);
-    }catch(e){
-      res.status(500).send({message: e.message})
+    } else {
+
     }
   });
 
