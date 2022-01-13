@@ -44,26 +44,35 @@ export default {
   ],
   auth: {
     strategies: {
-      google: {
-        clientId: '215547990872-9ggmlbv72dpnhuho5uclpn4a2hhrs96j.apps.googleusercontent.com',
-        codeChallengeMethod: '',
-        responseType: 'code',
+      cookie: {
+        cookie: {
+          // (optional) If set, we check this cookie existence for loggedIn check
+          name: 'XSRF-TOKEN',
+        },
+        endpoints: {
+          // (optional) If set, we send a get request to this endpoint before login
+          login: { url: '/login', method: 'post' },
+          logout: { url: '/logout', method: 'get' },
+          csrf: {
+            url: '',
+          }
+        }
       },
       local: {
         token: {
           property: 'token',
-          global: true,
+          // global: true,
           // required: true,
-          // type: 'Bearer'
+          type: false
         },
         user: {
           property: 'user',
-          // autoFetch: true
+          autoFetch: true
         },
         endpoints: {
           login: { url: '/login', method: 'post' },
-          logout: { url: '/api/auth/logout', method: 'post' },
-          user: { url: '/api/auth/user', method: 'get' }
+          logout: { url: '/logout', method: 'get' },
+          user: { url: '/auth/user', method: 'get' }
         }
       }
     }

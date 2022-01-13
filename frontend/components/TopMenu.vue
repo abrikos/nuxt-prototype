@@ -6,7 +6,7 @@
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav v-show="loggedUser">
-        <b-nav-item to="/user/cabinet" :active='$route.name && !!$route.name.match(/^cabinet/)'>Кабинет</b-nav-item>
+        <b-nav-item to="/user/cabinet" :active='$route.name && !!$route.name.match(/cabinet/)'>Кабинет</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav class="ms-auto">
         <b-nav-item to="/profile" v-show="loggedUser">{{ loggedUser && loggedUser.name }}
@@ -21,16 +21,18 @@
 
 <script>
 
+import {mapGetters} from 'vuex';
+
 export default {
   name: "TopMenu",
   computed:{
-    loggedUser(){
-      return this.$store.state.user
+    loggedUser() {
+      return this.$store.getters.loggedUser;
     }
   },
   methods: {
     async logout(){
-      await this.$axios.$get('logout');
+      await this.$auth.logout();
       this.$store.commit('logout')
     }
   }

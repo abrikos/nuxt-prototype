@@ -10,3 +10,9 @@ export const mutations = {
     state.user = null;
   }
 }
+
+export const getters = {
+  loggedUser(state){
+    return state.auth.user
+  }
+}

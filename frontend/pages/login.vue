@@ -1,7 +1,7 @@
 <template>
   <div>
-    <LoginForm/>
-    <form @submit.prevent="userLogin">
+    <loginGoogle :userData.sync="userData"/>
+    <form @submit.prevent="doLogin">
       <div>
         <label>Username</label>
         <input type="text" v-model="login.username"/>
@@ -14,17 +14,22 @@
         <button type="submit">Submit</button>
       </div>
     </form>
+    {{$router.currentRoute.query}}
   </div>
 </template>
 
 <script>
-import LoginForm from '@/components/GoogleLoginForm';
+import loginGoogle from '@/components/loginGoogle';
 
 export default {
   name: "login",
-  components: {LoginForm},
+  components: {loginGoogle},
+  created() {
+    this.$nuxt.$on('userLogged', this.doLogin)
+  },
   data() {
     return {
+      userData: null,
       login: {
         username: '',
         password: ''
@@ -32,13 +37,11 @@ export default {
     }
   },
   methods: {
-    async userLogin() {
-      try {
-        let response = await this.$auth.loginWith('google', {data: this.login})
-        console.log(response)
-      } catch (err) {
-        console.log(err)
-      }
+    async doLogin(data) {
+      const res = await this.$auth.loginWith('local', {data: {strategy: 'google', data}})
+      this.$auth.setUser(res.data);
+      await this.$router.push(this.$router.currentRoute.query.redirectUrl || '/')
+
     }
   }
 }

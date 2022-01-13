@@ -2,7 +2,6 @@
   <div>
     <GoogleLogin :params="params" :renderParams="renderParams" :onSuccess="onSuccess" :onFailure="onFailure"/>
     <button @click="test">Test Auth</button>
-    {{$auth.user}}
   </div>
 </template>
 
@@ -10,7 +9,7 @@
 import GoogleLogin from 'vue-google-login';
 
 export default {
-  name: "LoginForm",
+  name: "loginGoogle",
   data() {
     return {
       // client_id is the only required property but you can add several more params, full list down bellow on the Auth api section
@@ -19,25 +18,16 @@ export default {
       },
       // only needed if you want to render the button with the google ui
       renderParams: {
-        width: 250,
-        height: 50,
-        longtitle: true
+        longtitle: false
       }
     }
   },
-  mounted() {
-    console.log(process.env);
-  },
   methods: {
     test() {
-      this.$axios.$get('auth')
+      console.log('x22')
     },
     onSuccess(data) {
-      this.$auth.loginWith('local', {data: {strategy: 'google', data}})
-        .then(res => {
-          console.log(res);
-          this.$store.commit('setUser', res.data);
-        });
+      this.$nuxt.$emit('userLogged', data)
     },
     onFailure(data) {
       console.error(data)

@@ -14,7 +14,6 @@ export default function UserController(app) {
     Mongoose.user.findById(req.session.uid)
       .then(user => {
         if (!user) return res.status(401).send({message: 'Wrong authenticated user '})
-        console.log(user.public.name)
         res.send(user.public)
       })
       .catch(error => res.send({error: 500, message: error.message}))
