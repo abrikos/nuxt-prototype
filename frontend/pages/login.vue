@@ -1,29 +1,17 @@
 <template>
   <div>
     <loginGoogle :userData.sync="userData"/>
-    <form @submit.prevent="doLogin">
-      <div>
-        <label>Username</label>
-        <input type="text" v-model="login.username"/>
-      </div>
-      <div>
-        <label>Password</label>
-        <input type="text" v-model="login.password"/>
-      </div>
-      <div>
-        <button type="submit">Submit</button>
-      </div>
-    </form>
-    {{$router.currentRoute.query}}
+    <loginFacebook :userData.sync="userData"/>
   </div>
 </template>
 
 <script>
 import loginGoogle from '@/components/loginGoogle';
+import LoginFacebook from '@/components/loginFacebook';
 
 export default {
   name: "login",
-  components: {loginGoogle},
+  components: {LoginFacebook, loginGoogle},
   created() {
     this.$nuxt.$on('userLogged', this.doLogin)
   },
