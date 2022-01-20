@@ -1,15 +1,13 @@
-import https from 'https';
-export default function ({ $axios, redirect }) {
-  $axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false });
+export default function ({app, $axios }) {
   $axios.onRequest(config => {
-    console.log(config.method, 'Making request to ', config.url)
+    const token = app.$auth.strategy.token.get();
+    if(token) {
+      config.headers[app.$auth.strategies.custom.options.token.name] = token.uid;
+    }
+    console.log(config.method, 'to' , config.url)
   })
 
   $axios.onError(error => {
     console.warn(error.response && error.response.data)
-    const code = parseInt(error.response && error.response.status)
-    if (code === 400) {
-      redirect('/400')
-    }
   })
 }

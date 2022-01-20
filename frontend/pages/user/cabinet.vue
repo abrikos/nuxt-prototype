@@ -2,16 +2,21 @@
   <div>
     Cabinet
     {{loggedUser}}
+
   </div>
 </template>
 
 <script>
 export default {
   name: "cabinet",
-  middleware: 'authenticated',
   computed: {
     loggedUser(){
       return this.$store.getters.loggedUser;
+    }
+  },
+  methods:{
+    test(){
+      this.$axios.post('user/update', {superUser: false})
     }
   }
 }

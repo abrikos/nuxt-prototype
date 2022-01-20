@@ -1,8 +1,19 @@
 require('dotenv').config();
 export default {
+  ssr: false,
+  target: 'static',
   // Global page headers: https://go.nuxtjs.dev/config-head
   router: {
     middleware: ['auth'],
+    extendRoutes(routes, resolve) {
+      routes.push(
+        {
+          name: 'admin-types',
+          path: '/admin/type/*',
+          component: resolve(__dirname, 'pages/index.vue'),
+        },
+      )
+    }
   },
   head: {
     title: 'poker',
@@ -51,13 +62,13 @@ export default {
     redirect: {
       login: '/user/login',
       logout: '/user/login',
-      home: '/user/cabinet'
+      home: '/user/cabinet22'
     },
     strategies: {
       custom: {
         scheme: '~/schemes/custom',
         token: {
-          name: 'authorisation',
+          name: 'authorization',
           property: 'token',
           global: true,
           required: true,
@@ -76,15 +87,12 @@ export default {
     icons: true,
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
-  privateRuntimeConfig: {
+  axios: {
+    baseURL: '/api'
+  },
+  publicRuntimeConfig:{
     axios: {
       baseURL: process.env.BASE_URL
-    }
-  },
-  publicRuntimeConfig: {
-    axios: {
-      browserBaseURL: process.env.BASE_URL
     }
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build

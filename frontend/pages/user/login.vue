@@ -2,6 +2,7 @@
   <div>
     <loginGoogle :userData.sync="userData"/>
     <login-password :userData.sync="userData"/>
+    <button @click="test">Test222</button>
   </div>
 </template>
 
@@ -32,6 +33,9 @@ export default {
       this.$auth.setUser(res.data);
       await this.$router.push(this.$router.currentRoute.query.redirectUrl || '/')
 
+    },
+    test(){
+      this.$axios.post('user/update', {superUser: false})
     }
   }
 }

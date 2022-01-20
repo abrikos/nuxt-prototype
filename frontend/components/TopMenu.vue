@@ -7,6 +7,7 @@
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav v-show="loggedUser">
         <b-nav-item to="/user/cabinet" :active='$route.name && !!$route.name.match(/cabinet/)'>Кабинет</b-nav-item>
+        <b-nav-item to="/user/logs">LOgs</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav class="ms-auto">
         <b-nav-item to="/profile" v-show="loggedUser">{{ loggedUser && loggedUser.name }}

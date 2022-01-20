@@ -5,6 +5,9 @@
       <b-form-group label="username">
         <b-form-input v-model="form.username" />
       </b-form-group>
+      <b-form-group label="email">
+        <b-form-input v-model="form.email" />
+      </b-form-group>
       <b-form-group label="password">
         <b-form-input v-model="form.password" type="password"/>
       </b-form-group>
@@ -55,8 +58,8 @@ export default {
     rnd(){
       this.form.username= Math.random();
       this.form.email= Math.random() + '@aaa.com';
-      this.form.password= '1';
-      this.form.passwordConfirm= '1';
+      this.form.password= '123';
+      this.form.passwordConfirm= '123';
       this.error = this.form.username;
     },
   }

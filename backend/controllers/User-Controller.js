@@ -2,18 +2,11 @@ import * as Mongoose from '../models';
 import passport from '../passport';
 
 export default function UserController(app) {
-  function isLogged(req, res, next) {
-    if (req.session.uid) {
-      return next()
-    } else {
-      res.sendStatus(401);
-    }
-  }
 
   app.post('/api/auth/token', async (req, res) => {
-    const {authorisation} = req.headers;
-    if (!authorisation) return res.status(401).send({message: 'no-token-send'});
-    const found = await Mongoose.token.findOne({uid: authorisation}).populate('user');
+    const token = req.headers[passport.tokenName];
+    if (!token) return res.status(401).send({message: 'no-token-send'});
+    const found = await Mongoose.token.findOne({uid: token}).populate('user');
     if (!found) return res.status(401).send({message: 'no-token-found'});
     res.send(found.user.publicData());
   });
@@ -24,8 +17,8 @@ export default function UserController(app) {
   app.post('/api/auth/login', async (req, res) => {
     const {username, password} = req.body;
     let user = await Mongoose.user.findOne({username});
-    if (!user) return res.status(401).send({message: 'nouser'});
-    if (!user.checkPasswd(password)) return res.status(401).send({message: 'wrongpass'});
+    if (!user) return res.status(401).send({message: 'no-user'});
+    if (!user.checkPasswd(password)) return res.status(401).send({message: 'wrong-pass'});
     const {uid} = await getToken(user);
     res.send(user.publicData({uid}));
   });
@@ -51,6 +44,24 @@ export default function UserController(app) {
     }
 
   });
+
+  app.post('/api/user/update', passport.isLogged, (req, res) => {
+    Mongoose.user.findById(res.locals.user.id)
+      .then(model => {
+        const {password, ...rest} = req.body;
+        for (const field in rest) {
+          model[field] = req.body[field];
+        }
+        if (password) {
+          model.setPasswd(password);
+        }
+        res.sendStatus(200)
+      })
+      .catch(error => {
+        res.status(500).send({message: error.message})
+      })
+  });
+
 
 
 
@@ -95,47 +106,7 @@ export default function UserController(app) {
     }
   });
 
-  app.get('/api/logout', isLogged, (req, res) => {
-    delete req.session.uid;
-    res.sendStatus(200);
-  });
-
-  app.get('/api/user/:id/view', passport.isLogged, (req, res) => {
-    Mongoose.user.findById(req.params.id)
-      .select('username email')
-      .then(model => res.send(model))
-      .catch(error => {
-        res.status(500).send({message: error.message})
-      })
-  });
-
-  app.post('/api/user/:id/update', isLogged, (req, res) => {
-    Mongoose.user.findById(req.params.id)
-      .then(model => {
-        const {password, ...rest} = req.body;
-        for (const field in rest) {
-          model[field] = req.body[field];
-        }
-        if (password) {
-          model.setPasswd(password);
-        }
-        res.sendStatus(200)
-      })
-      .catch(error => {
-        res.status(500).send({message: error.message})
-      })
-  });
-
-  app.get('/api/user/list', isLogged, (req, res) => {
-    Mongoose.user.find()
-      .select('username email createdAt')
-      .then(list => res.send(list))
-      .catch(error => {
-        res.status(500).send({message: error.message})
-      })
-  });
-
-  app.post('/api/password/change', isLogged, (req, res) => {
+  app.post('/api/password/change', passport.isLogged, (req, res) => {
     const {password, passwordConfirm} = req.body;
     if (!password) return res.status(412).send({message: 'Необходимо указать пароль!'})
     if (passwordConfirm !== password) return res.status(412).send({message: 'Пароли не совпадают'})
@@ -150,7 +121,7 @@ export default function UserController(app) {
       })
   });
 
-  app.post('/api/email/change', isLogged, (req, res) => {
+  app.post('/api/email/change', passport.isLogged, (req, res) => {
     const {email} = req.body;
     if (!email) return res.status(412).send({message: 'Необходимо указать Email!'})
     Mongoose.user.findById(req.session.uid.user.id)
