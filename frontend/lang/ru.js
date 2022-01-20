@@ -1,3 +1,5 @@
 export default {
-  welcome: 'Привет!'
+  welcome: 'Привет!',
+  Login: 'Вход',
+  Signup: 'Регистрация',
 }

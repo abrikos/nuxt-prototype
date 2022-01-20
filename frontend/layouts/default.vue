@@ -1,7 +1,6 @@
 <template>
   <div>
     <TopMenu/>
-    {{$t('welcome')}}
     <b-container class="page-content">
       <nuxt/>
     </b-container>
