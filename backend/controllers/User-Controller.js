@@ -11,17 +11,7 @@ export default function UserController(app) {
     res.send(found.user.publicData());
   });
 
-  async function getToken(user) {
-    return Mongoose.token.create({user, uid: Math.random()})
-  }
-  app.post('/api/auth/login', async (req, res) => {
-    const {username, password} = req.body;
-    let user = await Mongoose.user.findOne({username});
-    if (!user) return res.status(401).send({message: 'no-user'});
-    if (!user.checkPasswd(password)) return res.status(401).send({message: 'wrong-pass'});
-    const {uid} = await getToken(user);
-    res.send(user.publicData({uid}));
-  });
+  app.post('/api/auth/login', passport.authenticate);
 
   app.post('/api/auth/signup', async (req, res) => {
     const {username, password, passwordConfirm, email} = req.body;

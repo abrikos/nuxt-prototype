@@ -5,8 +5,7 @@
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
     <b-collapse id="nav-collapse" is-nav>
-      <b-navbar-nav v-show="loggedUser">
-        <b-nav-item to="/user/cabinet" :active='$route.name && !!$route.name.match(/cabinet/)'>{{ $t('Cabinet') }}</b-nav-item>
+      <b-navbar-nav v-if="loggedUser">
         <b-nav-item to="/user/logs">LOgs</b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
@@ -20,11 +19,13 @@
         </b-nav-item-dropdown>
       </b-navbar-nav>
       <b-navbar-nav class="ms-auto">
-        <b-nav-item to="/profile" v-show="loggedUser">{{ loggedUser && loggedUser.name }}
+        <b-nav-item to="/user/cabinet" :active='$route.name && !!$route.name.match(/cabinet/)'>
+          <img v-if="loggedUser.avatar" :src="loggedUser.avatar" alt="Avatar" class="user-avatar"/>
+          {{ loggedUser.name }}
         </b-nav-item>
-        <b-nav-item to="/user/login" v-show="!loggedUser">{{ $t('Login') }}</b-nav-item>
-        <b-nav-item to="/user/signup" v-show="!loggedUser">{{ $t('Signup') }}</b-nav-item>
-        <b-nav-item @click="logout" v-show="loggedUser">{{ $t('Logout') }}</b-nav-item>
+        <b-nav-item to="/user/login" v-if="!loggedUser">{{ $t('Login') }}</b-nav-item>
+        <b-nav-item to="/user/signup" v-if="!loggedUser">{{ $t('Signup') }}</b-nav-item>
+        <b-nav-item @click="logout" v-if="loggedUser">{{ $t('Logout') }}</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
@@ -58,6 +59,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="sass">
+.user-avatar
+  max-height: 23px
+  max-width: 23px
 </style>

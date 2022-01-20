@@ -36,8 +36,8 @@ export default {
         const {username, password} = this;
         const data = {username, password};
         let res = await this.$auth.loginWith('custom', {data});
-        this.$auth.setUser(res.data);
-        this.$auth.strategy.token.set(res.data.token);
+        // this.$auth.setUser(res.data);
+        // this.$auth.strategy.token.set(res.data.token);
         const redirect = this.$auth.$storage.getUniversal('redirect');
         console.log('TRY TO REDIRECT', redirect);
         this.$router.push(redirect || '/admin/profile');

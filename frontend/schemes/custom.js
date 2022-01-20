@@ -29,7 +29,7 @@ export default class CustomScheme extends LocalScheme {
       // Transform the user object
       const customUser = {
         ...user,
-        fullName: user.firstName + ' ' + user.lastName,
+        // fullName: user.firstName + ' ' + user.lastName,
         roles: ['user']
       }
 

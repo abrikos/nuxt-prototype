@@ -6,6 +6,8 @@ const schema = new mongoose.Schema({
   username: {type: String, unique: true, trim: true, required: 'Username is required',},
   email: {type: String, unique: true, trim: true, lowercase: true, validate: [isEmail, 'invalid email']},
   password: String,
+  name: String,
+  avatar: String,
   superUser: Boolean
 }, {
   timestamps: {createdAt: 'createdAt'},
@@ -14,8 +16,8 @@ const schema = new mongoose.Schema({
 })
 
 schema.methods.publicData = function (token) {
-  const {username, email, createdAt} = this;
-  return {username, email, createdAt, token};
+  const {username, email, name, avatar, createdAt} = this;
+  return {username, email, name, avatar, createdAt, token};
 }
 
 schema.methods.readToken = function (token) {

@@ -26,8 +26,16 @@ export default {
     test() {
       console.log('x22')
     },
-    onSuccess(data) {
-      this.$nuxt.$emit('userLogged', data)
+    async onSuccess(data) {
+        try {
+          data.strategy = 'google';
+          await this.$auth.loginWith('custom', {data});
+          const redirect = this.$auth.$storage.getUniversal('redirect');
+          console.log('TRY TO REDIRECT', redirect);
+          this.$router.push(redirect || '/admin/profile');
+        } catch (error) {
+          this.$set(this, "error", error.message);
+        }
     },
     onFailure(data) {
       console.error(data)
