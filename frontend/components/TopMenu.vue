@@ -9,6 +9,15 @@
         <b-nav-item to="/user/cabinet" :active='$route.name && !!$route.name.match(/cabinet/)'>Кабинет</b-nav-item>
         <b-nav-item to="/user/logs">LOgs</b-nav-item>
       </b-navbar-nav>
+      <b-navbar-nav>
+        <b-nav-item
+          v-for="locale in availableLocales"
+          :key="locale.code"
+          @click="switchLocale(locale.code)">
+          {{ locale.name }}
+        </b-nav-item>
+      </b-navbar-nav>
+
       <b-navbar-nav class="ms-auto">
         <b-nav-item to="/profile" v-show="loggedUser">{{ loggedUser && loggedUser.name }}
         </b-nav-item>
@@ -22,19 +31,23 @@
 
 <script>
 
-import {mapGetters} from 'vuex';
-
 export default {
   name: "TopMenu",
-  computed:{
+  computed: {
     loggedUser() {
       return this.$store.getters.loggedUser;
+    },
+    availableLocales() {
+      return this.$i18n.locales.filter(i => i.code !== this.$i18n.locale)
     }
   },
   methods: {
-    async logout(){
+    async logout() {
       await this.$auth.logout();
       this.$store.commit('logout')
+    },
+    switchLocale(code){
+      this.$i18n.setLocale(code)
     }
   }
 }

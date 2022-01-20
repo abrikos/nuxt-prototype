@@ -55,7 +55,26 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
+    '@nuxtjs/i18n',
   ],
+  i18n: {
+    locales: [
+      {
+        code: 'en',
+        file: 'en.js',
+        name: 'English'
+      },
+      {
+        code: 'ru',
+        name: 'Русский',
+        file: 'ru.js',
+      }
+    ],
+    strategy: 'no_prefix',
+    defaultLocale: 'en',
+    lazy: true,
+    langDir: 'lang/',
+  },
   auth: {
     rewriteRedirects: true,
     watchLoggedIn: true,
