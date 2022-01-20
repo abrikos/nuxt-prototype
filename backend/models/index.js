@@ -1,3 +1,4 @@
 import user from "./User-Model"
+import token from "./Token-Model"
 
-export {user}
+export {user, token}

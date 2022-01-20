@@ -1,4 +1,5 @@
 import * as Mongoose from '../models';
+import passport from '../passport';
 
 export default function UserController(app) {
   function isLogged(req, res, next) {
@@ -8,6 +9,53 @@ export default function UserController(app) {
       res.sendStatus(401);
     }
   }
+
+  app.post('/api/auth/token', async (req, res) => {
+    const {authorisation} = req.headers;
+    if (!authorisation) return res.status(401).send({message: 'no-token-send'});
+    const found = await Mongoose.token.findOne({uid: authorisation}).populate('user');
+    if (!found) return res.status(401).send({message: 'no-token-found'});
+    res.send(found.user.publicData());
+  });
+
+  async function getToken(user) {
+    return Mongoose.token.create({user, uid: Math.random()})
+  }
+  app.post('/api/auth/login', async (req, res) => {
+    const {username, password} = req.body;
+    let user = await Mongoose.user.findOne({username});
+    if (!user) return res.status(401).send({message: 'nouser'});
+    if (!user.checkPasswd(password)) return res.status(401).send({message: 'wrongpass'});
+    const {uid} = await getToken(user);
+    res.send(user.publicData({uid}));
+  });
+
+  app.post('/api/auth/signup', async (req, res) => {
+    const {username, password, passwordConfirm, email} = req.body;
+    if (!username) return res.status(412).send({message: 'Необходимо указать username!'})
+    // if (!email) return res.status(412).send({message: 'Необходимо указать email!'})
+    if (!password) return res.status(412).send({message: 'Необходимо указать пароль!'})
+    if (passwordConfirm !== password) return res.status(412).send({message: 'Пароли не совпадают'})
+    try {
+      let user = await Mongoose.user.findOne({$or: [{username}, {email}]})
+      if (user && user.username === username) return res.status(422).send({message: 'Такой пользователь уже зарегистрирован'});
+      if (user && user.email === email) return res.status(422).send({message: 'Такой email уже зарегистрирован'});
+      user = new Mongoose.user({username, email});
+      console.log('------------', user)
+      user.setPasswd(password);
+      await user.save()
+      res.sendStatus(200)
+    } catch (error) {
+      console.log(error)
+      res.status(500).send({message: error.message})
+    }
+
+  });
+
+
+
+
+
 
   app.get('/api/auth', async (req, res) => {
     if (!req.session.uid) return res.status(401).send({message: 'Not logged. No user'})
@@ -52,7 +100,7 @@ export default function UserController(app) {
     res.sendStatus(200);
   });
 
-  app.get('/api/user/:id/view', isLogged, (req, res) => {
+  app.get('/api/user/:id/view', passport.isLogged, (req, res) => {
     Mongoose.user.findById(req.params.id)
       .select('username email')
       .then(model => res.send(model))
@@ -116,25 +164,4 @@ export default function UserController(app) {
       })
   });
 
-  app.post('/api/signup', async (req, res) => {
-    const {username, password, passwordConfirm, email} = req.body;
-    if (!username) return res.status(412).send({message: 'Необходимо указать username!'})
-    if (!email) return res.status(412).send({message: 'Необходимо указать email!'})
-    if (!password) return res.status(412).send({message: 'Необходимо указать пароль!'})
-    if (passwordConfirm !== password) return res.status(412).send({message: 'Пароли не совпадают'})
-    try {
-      let user = await Mongoose.user.findOne({$or: [{username}, {email}]})
-      if (user && user.username === username) return res.status(422).send({message: 'Такой пользователь уже зарегистрирован'});
-      if (user && user.email === email) return res.status(422).send({message: 'Такой email уже зарегистрирован'});
-      user = new Mongoose.user({username, email});
-      user.setPasswd(password);
-      await user.save()
-      res.sendStatus(200)
-
-    } catch (error) {
-      console.log(error)
-      res.status(500).send({message: error.message})
-    }
-
-  });
 }

@@ -11,8 +11,8 @@
       <b-navbar-nav class="ms-auto">
         <b-nav-item to="/profile" v-show="loggedUser">{{ loggedUser && loggedUser.name }}
         </b-nav-item>
-        <b-nav-item to="/login" v-show="!loggedUser">Вход</b-nav-item>
-        <b-nav-item to="/signup" v-show="!loggedUser">Регистрация</b-nav-item>
+        <b-nav-item to="/user/login" v-show="!loggedUser">Вход</b-nav-item>
+        <b-nav-item to="/user/signup" v-show="!loggedUser">Регистрация</b-nav-item>
         <b-nav-item @click="logout" v-show="loggedUser">Выход</b-nav-item>
       </b-navbar-nav>
     </b-collapse>

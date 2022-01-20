@@ -1,17 +1,19 @@
 <template>
   <div>
     <loginGoogle :userData.sync="userData"/>
-    <loginFacebook :userData.sync="userData"/>
+    <login-password :userData.sync="userData"/>
   </div>
 </template>
 
 <script>
 import loginGoogle from '@/components/loginGoogle';
 import LoginFacebook from '@/components/loginFacebook';
+import LoginPassword from '@/components/loginPassword';
 
 export default {
   name: "login",
-  components: {LoginFacebook, loginGoogle},
+  auth: false,
+  components: {LoginPassword, LoginFacebook, loginGoogle},
   created() {
     this.$nuxt.$on('userLogged', this.doLogin)
   },

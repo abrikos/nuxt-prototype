@@ -5,7 +5,6 @@ import MongoStore from "connect-mongo";
 import mongoose from "mongoose";
 import Controllers from "./controllers";
 import * as Models from "./models";
-import passport from "passport";
 const session = require( "express-session");
 const cookieParser = require('cookie-parser');
 dotenv.config();
@@ -17,7 +16,6 @@ app.use(fileUpload())
 const fileStoreOptions = {};
 app.use(json({limit:'200mb'}));
 app.set('trust proxy', 1)
-app.use(passport.initialize())
 app.use(session({
   secret: 'fdsdfs&%dfsd',
   name: 'secretname',
@@ -29,7 +27,6 @@ app.use(session({
   // store: new FileStore(fileStoreOptions),
   resave: true,
 }));
-app.use(passport.session())
 const port = process.env.SERVER_PORT; // default port to listen
 
 app.set("view engine", "ejs");

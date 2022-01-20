@@ -1,6 +1,9 @@
 require('dotenv').config();
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
+  router: {
+    middleware: ['auth'],
+  },
   head: {
     title: 'poker',
     htmlAttrs: {
@@ -43,36 +46,27 @@ export default {
     '@nuxtjs/auth-next',
   ],
   auth: {
+    rewriteRedirects: true,
+    watchLoggedIn: true,
+    redirect: {
+      login: '/user/login',
+      logout: '/user/login',
+      home: '/user/cabinet'
+    },
     strategies: {
-      cookie: {
-        cookie: {
-          // (optional) If set, we check this cookie existence for loggedIn check
-          name: 'XSRF-TOKEN',
-        },
-        endpoints: {
-          // (optional) If set, we send a get request to this endpoint before login
-          login: { url: '/login', method: 'post' },
-          logout: { url: '/logout', method: 'get' },
-          csrf: {
-            url: '',
-          }
-        }
-      },
-      local: {
+      custom: {
+        scheme: '~/schemes/custom',
         token: {
+          name: 'authorisation',
           property: 'token',
-          // global: true,
-          // required: true,
-          type: false
-        },
-        user: {
-          property: 'user',
-          autoFetch: true
+          global: true,
+          required: true,
+          type: 'BearerZZZZZZZZZ'
         },
         endpoints: {
-          login: { url: '/login', method: 'post' },
-          logout: { url: '/logout', method: 'get' },
-          user: { url: '/auth/user', method: 'get' }
+          login: { url: '/auth/login', method: 'post' },
+          logout: { url: '/auth/logout', method: 'post' },
+          user: { url: '/auth/token', method: 'post' }
         }
       }
     }
