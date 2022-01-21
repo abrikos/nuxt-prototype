@@ -15,9 +15,14 @@ const schema = new mongoose.Schema({
   toJSON: {virtuals: true}
 })
 
+schema.virtual('alias')
+  .get(function () {
+    return this.name || this.username
+  });
+
 schema.methods.publicData = function (token) {
-  const {username, email, name, avatar, createdAt} = this;
-  return {username, email, name, avatar, createdAt, token};
+  const {username, email, name, avatar, createdAt, alias} = this;
+  return {username, email, name, avatar, createdAt, alias, token};
 }
 
 schema.methods.readToken = function (token) {

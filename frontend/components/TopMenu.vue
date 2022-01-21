@@ -19,9 +19,9 @@
         </b-nav-item-dropdown>
       </b-navbar-nav>
       <b-navbar-nav class="ms-auto">
-        <b-nav-item to="/user/cabinet" :active='$route.name && !!$route.name.match(/cabinet/)'>
-          <img v-if="loggedUser.avatar" :src="loggedUser.avatar" alt="Avatar" class="user-avatar"/>
-          {{ loggedUser.name }}
+        <b-nav-item v-if="loggedUser" to="/user/cabinet" :active='$route.name && !!$route.name.match(/cabinet/)'>
+          <Avatar :avatar="loggedUser.avatar"/>
+          {{ loggedUser.alias }}
         </b-nav-item>
         <b-nav-item to="/user/login" v-if="!loggedUser">{{ $t('Login') }}</b-nav-item>
         <b-nav-item to="/user/signup" v-if="!loggedUser">{{ $t('Signup') }}</b-nav-item>
@@ -33,8 +33,10 @@
 
 <script>
 
+import Avatar from '@/components/Avatar';
 export default {
   name: "TopMenu",
+  components: {Avatar},
   computed: {
     loggedUser() {
       return this.$store.getters.loggedUser;
