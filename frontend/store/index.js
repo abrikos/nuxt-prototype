@@ -5,8 +5,21 @@ export const state = () => ({
 
 export const mutations = {
   setAlert(state, payload) {
-    console.log(this)
-    if(payload) state.alertTimer = 10;
+    if (payload) {
+      state.alertTimer = 10;
+      const timer = setInterval(() => {
+        console.log(state.alertTimer, this)
+        this.commit('setAlertTimer', state.alertTimer - 1);
+        if (state.alertTimer <= 0) {
+          this.commit('setAlert2', null);
+          clearInterval(timer);
+        }
+      }, 1000);
+      state.alert = payload;
+    }
+
+  },
+  setAlert2(state, payload) {
     state.alert = payload;
   },
   setAlertTimer(state, payload) {
