@@ -1,18 +1,27 @@
 export const state = () => ({
-  user: null,
+  alert: null,
+  alertTimer: 0
 })
 
 export const mutations = {
-  setUser(state, payload){
-    state.user = payload;
+  setAlert(state, payload) {
+    console.log(this)
+    if(payload) state.alertTimer = 10;
+    state.alert = payload;
   },
-  logout(state){
-    state.user = null;
+  setAlertTimer(state, payload) {
+    state.alertTimer = payload;
   }
 }
 
 export const getters = {
-  loggedUser(state){
+  loggedUser(state) {
     return state.auth.user
-  }
+  },
+  getAlert(state) {
+    return state.alert
+  },
+  getAlertTimer(state) {
+    return state.alertTimer
+  },
 }
