@@ -38,24 +38,19 @@ export default function UserController(app) {
   app.post('/api/user/update', passport.isLogged, (req, res) => {
     Mongoose.user.findById(res.locals.user.id)
       .then(model => {
-        const {password, ...rest} = req.body;
-        for (const field in rest) {
-          model[field] = req.body[field];
-        }
+        const {password} = req.body;
+        model.name = req.body.alias;
+        model.avatar = req.body.avatar;
         if (password) {
           model.setPasswd(password);
         }
-        res.sendStatus(200)
+        model.save();
+        res.send(model.publicData())
       })
       .catch(error => {
         res.status(500).send({message: error.message})
       })
   });
-
-
-
-
-
 
 
   app.get('/api/auth', async (req, res) => {
@@ -71,9 +66,9 @@ export default function UserController(app) {
   app.post('/api/login', async (req, res) => {
     const {strategy, data} = req.body;
     console.log('zzz', strategy);
-    if(strategy === 'google'){
+    if (strategy === 'google') {
       const {yu} = data;
-      if(!yu && yu.DW) return res.sendStatus(401)
+      if (!yu && yu.DW) return res.sendStatus(401)
       try {
         let user = await Mongoose.user.findOne({username: yu.DW})
         if (!user) {
@@ -88,7 +83,7 @@ export default function UserController(app) {
         req.session.uid = user.id;
         console.log(user.public);
         res.send(user.public);
-      }catch(e){
+      } catch (e) {
         res.status(500).send({message: e.message})
       }
     } else {

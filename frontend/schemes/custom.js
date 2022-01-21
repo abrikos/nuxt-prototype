@@ -1,9 +1,12 @@
 import {LocalScheme} from '~auth/runtime'
 
 export default class CustomScheme extends LocalScheme {
+  setUser(user){
+    console.log('gggggggg', this, user)
+  }
   // Override `fetchUser` method of `local` scheme
   async fetchUser(endpoint) {
-    // if (!this.$auth.ctx.route.path.match('/admin')) return;
+    if (!this.$auth.ctx.route.path.match('/user')) return;
     const token = this.$auth.strategy.token.get();
     console.log('SSSSSSSSSSScheme', token, this.check())
     // Token is required but not available

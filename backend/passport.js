@@ -1,7 +1,7 @@
 import * as Mongoose from "./models";
-
+const tokenName =  'authorization';
 const passport = {
-  tokenName: 'authorization',
+  tokenName,
   isLogged: async function (req, res, next) {
     if (req.headers[tokenName]) {
       const found = await Mongoose.token.findOne({uid: req.headers[tokenName]}).populate('user');
