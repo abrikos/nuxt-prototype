@@ -4,7 +4,6 @@
     :variant="alert.variant"
     show
   >
-    {{alert}}
     {{ alert.message }}
   </b-alert>
 </template>
