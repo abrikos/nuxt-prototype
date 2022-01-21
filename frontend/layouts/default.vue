@@ -2,6 +2,7 @@
   <div>
     <TopMenu/>
     <b-container class="page-content">
+      <Alert/>
       <nuxt/>
     </b-container>
   </div>
@@ -9,9 +10,10 @@
 
 <script>
 import TopMenu from '@/components/TopMenu';
+import Alert from '@/components/Alert';
 
 export default {
-  components: {TopMenu},
+  components: {Alert, TopMenu},
 }
 </script>
 
@@ -20,9 +22,9 @@ body
   background-color: #47494E
 
   .page-content
-    border-radius: 10px
     background-color: aliceblue
     min-height: 100vh
+    padding-top: 10px
 
   h1
     text-align: center
