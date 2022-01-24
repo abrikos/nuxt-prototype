@@ -1,4 +1,4 @@
-export default function ({app, $axios}) {
+export default function ({app, $axios, store}) {
   $axios.onRequest(config => {
     const token = app.$auth.strategy.token.get();
     if (token) {
@@ -9,8 +9,9 @@ export default function ({app, $axios}) {
 
   $axios.onError(error => {
     console.warn(error.response, error.response.data)
-    if(error.response) {
+    if (error.response) {
       error.response.data.variant = 'danger';
+      store.commit('setAlert', error.response.data);
       return Promise.reject(error.response.data);
     }
   })
