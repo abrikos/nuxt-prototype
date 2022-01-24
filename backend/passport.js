@@ -51,10 +51,11 @@ const passport = {
         name: yu.nf
       })
     }else{
-      user.name = yu.nf;
-      user.avatar = yu.nN;
+      if(!user.name)
+        user.name = yu.nf;
+      if(!user.avatar)
+        user.avatar = yu.nN;
     }
-    console.log(user)
     await user.save();
     return user;
   },
